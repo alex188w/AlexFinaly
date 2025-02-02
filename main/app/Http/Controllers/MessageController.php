@@ -134,18 +134,17 @@ class MessageController extends Controller
      * @throws Exception
      */
     public function chatStore(Request $request)
-    {
-        $OPENAI_API_KEY = "sk-rXcZzsGdS3GB6H3U7l0fAFcRhWANPJY8";
+    {    
         // Валидируем запрос
         $validated = $request->validate([
             'question' => 'required|string|max:500',
         ]);
 
-        $token = '20252025';
+        $token = env('SECRET_TOKEN');       
 
-        if ($token === $request->token) {
+        if ($request->token === $token) {
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $OPENAI_API_KEY,
+                'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
             ])
                 ->post('https://api.proxyapi.ru/openai/v1/chat/completions', [
                     'model' => 'gpt-3.5-turbo',

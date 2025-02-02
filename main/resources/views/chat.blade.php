@@ -46,7 +46,7 @@
                         <div class="modal-footer">
                             <div class="token col-sm-4 pb-2">
                                 <label style="padding-top: 5px;" class="form-label">Токен</label>
-                                <input type="text" value="" placeholder="" name="token"
+                                <input type="password" value="" placeholder="" name="token"
                                     class="form-control form-control-default" required="" autocomplete="off" data-mask="phone-1"
                                     data-init-mask="true">
                             </div>
