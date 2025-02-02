@@ -59,6 +59,36 @@ a {
     max-width: 170px;
 }
 
+.top__header-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* margin-right: 25px; */
+    margin-left: 55px;
+    padding-top: 4px;
+    background: white;
+    height: 81px;
+    width: 125px;
+    border-radius: 4px;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.top__header-chat:hover {
+    transform: scale(1.1);
+}
+
+.header-chat {
+    /* margin-left: 155px; */
+}
+
+.mail-chat {
+    margin: 8px;
+    height: 27px;
+    width: auto;
+}
+
 .header-right {
     display: flex;
     /* gap: 50px; */
@@ -94,6 +124,59 @@ a {
     font-size: 24px;
 }
 
+.alex-chat {
+    max-width: 321px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.chat {
+    position: relative;
+    max-width: 270px;
+    max-height: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 25px;
+    transition: transform 0.5s ease;
+}
+
+.chat:hover {
+    transform: scale(1.1);
+}
+
+
+.logo-chat {
+    width: 270px;
+    max-height: 170px;
+    object-fit: cover;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #BFA181;
+    /* border-width: 1px; */
+}
+
+.logo-gpt {
+    position: absolute;
+    margin: 0 auto;
+    bottom: 12px;
+    width: 80px;
+    border-radius: 2px;
+    z-index: 5;
+}
+
+.text-chat {
+    position: absolute;
+    top: 20px;
+    margin: 0 auto;
+    font-size: 35px;
+    line-height: 25px;
+    color: white;
+    /* color: #BFA181; */
+    z-index: 5;
+}
+
 .alex-photo {
     width: 350px;
     margin-left: 25px;
@@ -107,12 +190,16 @@ a {
 }
 
 .alex-logo {
-    max-height: 200px;
-    max-width: 321px;
+    width: 270px;
+    max-height: 170px;
     margin-right: 25px;
     margin-left: 25px;
-    border-radius: 7px;
-    margin-bottom: 75px;
+    /* margin-bottom: 75px; */
+    object-fit: cover;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #BFA181;
+    border-width: 2px;
 }
 
 .alex-name {
@@ -298,6 +385,18 @@ a {
     gap: 15px;
 }
 
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.token {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 .top__footer {
     position: relative;
     display: flex;
@@ -355,13 +454,10 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
     margin-top: 15px;
     margin-right: 25px;
     margin-left: 25px;
     padding-top: 4px;
-    /* background: rgb(234, 238, 243); */
-    /* background: rgb(221, 232, 245); */
     background: white;
     height: 80px;
     width: 120px;
@@ -492,6 +588,7 @@ a {
     margin-left: 25px;
     padding-top: 4px;
     background: rgb(221, 232, 245);
+    /* background: white; */
     border-radius: 4px;
     border: none;
 }
@@ -623,10 +720,10 @@ img:hover {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
     .top__header {
-        height: 300px;
+        height: 250px;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -636,6 +733,38 @@ img:hover {
         margin-top: 4px;
         padding-top: 25px;
         padding-bottom: 25px;
+    }
+
+    .top__header-chat {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .top-content {
+        margin-bottom: 50px;
+    }
+
+    /* .top__header {
+        height: 250px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        margin-top: 4px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    } */
+
+    /* .header-chat {
+        margin-left: 0px;
+    } */
+
+    .top__header-chat {
+        margin-left: 0px;
     }
 
     .alex-name_surname {

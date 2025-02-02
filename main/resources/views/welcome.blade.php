@@ -20,10 +20,21 @@
             <div class="top__footer-logo">
                 <a class="logo" href="https://alex18w.ru/"><img width="80px" src="./img/logo2-1.jpg" alt="logo"></a>
             </div>
+            <div class="header-chat">
+                <a class="top__header-chat" href="{{ url('message/chat') }}">
+                    <div class="send_mail">
+                        <p class="send">Задать</p>
+                    </div>
+                    <img class="mail-chat" src="./img/chatGPT2.png" alt="">
+                    <div class="send_mail">
+                        <p class="send">вопрос</p>
+                    </div>
+                </a>
+            </div>
             <div class="header-right">
                 <p style="font-weight: bold;" class="alex">+7 (909) 018-60-...</p>
 
-                <a class="top__footer-mail" href="{{ route('message_form') }}">
+                <a class="top__footer-mail" href="{{ url('message/mail') }}">
                     <div class="send_mail">
                         <p class="send">Отправить</p>
                     </div>
@@ -90,7 +101,14 @@
                 <p class="alex-text">Не всегда было легко и просто, даже, чаще всего было нелегко и непросто, но оно того стоит.</p>
                 <p class="alex-text">...Рекомендую! </p>
             </div>
-            <img class="alex-logo" src="./img/logo2-2.JPG" alt="logo">
+            <div class="alex-chat">
+                <a class="chat" href="{{ url('message/chat') }}">
+                    <p class="text-chat">задать вопрос</p>
+                    <img class="logo-chat" src="./img/chatGPT5.png" alt="gpt">
+                    <img class="logo-gpt" src="./img/chatGPT4.jpg" alt="gpt">
+                </a>
+                <img class="alex-logo" src="./img/logo2-3.JPG" alt="logo">
+            </div>
         </div>
 
         <div class="project center">
@@ -241,7 +259,6 @@
                         <span class="weather__min">{{ (int)($data->main->grnd_level * 0.75) }} мм</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -254,16 +271,6 @@
                 <p id='1' class="time"></p>
             </div>
         </div>
-
-        <!-- <a class="top__footer-mail" href="{{ route('message_form') }}">
-            <div class="send_mail">
-                <p class="send">Отправить</p>
-            </div>
-            <img class="mail" width="80px" src="./img/envelope-gold.svg" alt="mail">
-            <div class="send_mail">
-                <p class="send">сообщение</p>
-            </div>
-        </a> -->
     </div>
     <script type="text/javascript">
         var div = document.getElementById('1');

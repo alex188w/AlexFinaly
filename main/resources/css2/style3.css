@@ -44,6 +44,17 @@ a {
     margin-bottom: 50px;
 }
 
+.mail-chat {
+    margin: 8px;
+    height: 27px;
+    width: auto;
+    margin-bottom: 3px;
+}
+
+.footer-chat {
+    margin-left: 155px;
+}
+
 .header-img {
     max-width: 100%;
     border-radius: 10px;

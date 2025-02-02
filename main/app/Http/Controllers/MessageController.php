@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Message;
@@ -42,17 +43,22 @@ class MessageController extends Controller
         return view('welcome', compact('text'), ['visitorCount' => $visitorCount, 'data' => $data]);
     }
 
+    public function indexAction($action): View|Factory|Application
+    {
+        if ($action == 'mail') {
+            return view('message');
+        } elseif ($action == 'chat') {
+            return view('chat');
+        }
+
+        return response()->json(['message' => 'Invalid action'], 400);
+    }
+
     public function visitors(Request $request): View|Factory|Application
     {
         $visitorCount = DB::table('visitor_counts')->get();
         // $text = '';
         return view('visitors', ['visitors' => $visitorCount]);
-    }
-
-    public function index(): View|Factory|Application
-    {
-        // $text = '';
-        return view('message');
     }
 
     public function weather(Request $crequest): View|Factory|Application
@@ -117,6 +123,65 @@ class MessageController extends Controller
         $data = json_decode($response);
         $currentTime = time();
 
-        return view('welcome', compact('text'), ['visitorCount' => $visitorCount, 'data' => $data]);
+        return redirect()->route('welcome', compact('text'))
+            ->with([
+                'visitorCount' => $visitorCount,
+                'data' => $data
+            ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function chatStore(Request $request)
+    {
+        $OPENAI_API_KEY = "sk-rXcZzsGdS3GB6H3U7l0fAFcRhWANPJY8";
+        // Валидируем запрос
+        $validated = $request->validate([
+            'question' => 'required|string|max:500',
+        ]);
+
+        $token = '20252025';
+
+        if ($token === $request->token) {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $OPENAI_API_KEY,
+            ])
+                ->post('https://api.proxyapi.ru/openai/v1/chat/completions', [
+                    'model' => 'gpt-3.5-turbo',
+                    'messages' => [
+                        ['role' => 'user', 'content' => $validated['question']],
+                    ]
+                ]);
+
+            if ($response->successful()) {
+                $answer = $response->json()['choices'][0]['message']['content'];
+            } else {
+                $answer = 'Ошибка при запросе к OpenAI. Попробуйте позже.';
+            }
+        } else {
+            $answer = 'Ошибка при запросе к OpenAI. Попробуйте позже.';
+        }
+
+        // Отправляем запрос в OpenAI через прокси
+        // $response = Http::withHeaders([
+        //     'Authorization' => 'Bearer ' . $OPENAI_API_KEY,
+        // ])
+        // ->post('https://api.proxyapi.ru/openai/v1/chat/completions', [
+        //     'model' => 'gpt-3.5-turbo',
+        //     'messages' => [
+        //         ['role' => 'user', 'content' => $validated['question']],
+        //     ]
+        // ]);
+
+        // Проверяем, есть ли ошибка в ответе
+        // if ($response->successful()) {
+        //     $answer = $response->json()['choices'][0]['message']['content'];
+        // } else {
+        //     $answer = 'Ошибка при запросе к OpenAI. Попробуйте позже.';
+        // }
+
+        // Возвращаем ответ на страницу с выводом
+        return redirect()->back()->with('answer', $answer);
     }
 }

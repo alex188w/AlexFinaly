@@ -19,43 +19,42 @@
             <div class="modal-dialog modal-lg modal-center">
                 <div class="modal-content bg-body ">
                     <div class="modal-header">
-                        <h5 class="modal-title " id="popupLabel442073">Связаться</h5>
+                        <h5 class="modal-title " id="popupLabel442073">Вопрос для chatGPT</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть" onclick="window.location='{{ url('/') }}'"></button>
                     </div>
 
-                    <form action="{{ route('message_form') }}" method="POST">
+                    <form action="{{ route('chat_form') }}" method="POST">
                         @csrf
                         <div class="modal-body" style="max-height:75vh; overflow:auto; overflow-x:hidden;">
                             <div class=""></div>
                             <div class="form-row row g-2 js-form-result"><input type="hidden" value="442073" name="form_id"><input type="hidden" value="1" name="submit_form">
 
                                 <div class="col-sm-12 pb-2">
-                                    <label class="form-label">Имя</label>
-                                    <input type="text" value="" placeholder="" name="name"
-                                        class="form-control form-control-default" required="" autocomplete="off" minlength="1"
-                                        maxlength="120">
-                                </div>
-                                <div class="col-sm-6 pb-2">
-                                    <label class="form-label">Телефон</label>
-                                    <input type="text" value="" placeholder="" name="phone"
-                                        class="form-control form-control-default" required="" autocomplete="off" data-mask="phone-1"
-                                        data-init-mask="true">
-                                </div>
-                                <div class="col-sm-6 pb-2">
-                                    <label class="form-label">Email</label>
-                                    <input type="text" value="" placeholder="" name="email"
-                                        class="form-control form-control-default" autocomplete="off" minlength="1" maxlength="120">
-                                </div>
-                                <div class="col-sm-12 pb-2">
-                                    <label class="form-label">Сообщение</label>
-                                    <textarea placeholder="" style="height:100px" name="text_message"
+                                    <label class="form-label">Напишите вопрос</label>
+                                    <textarea placeholder="" style="height:100px" name="question" id="question"
                                         class="form-control form-control-default" rows="5" autocomplete="off" maxlength="2000"></textarea>
+                                </div>
+
+                                <div class="col-sm-12 pb-2">
+                                    <label class="form-label">Ответ chatGPT</label>
+                                    <textarea placeholder="" style="height:200px" name="text_message"
+                                        class="form-control form-control-default" rows="5" autocomplete="off" maxlength="2000">{{ session('answer') }}</textarea>
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="window.location='{{ url('/') }}'">Закрыть</button>
-                            <button type="submit" name="submit" class="btn js-form-btn btn-primary auto">Отправить</button>
+                            <div class="token col-sm-4 pb-2">
+                                <label style="padding-top: 5px;" class="form-label">Токен</label>
+                                <input type="text" value="" placeholder="" name="token"
+                                    class="form-control form-control-default" required="" autocomplete="off" data-mask="phone-1"
+                                    data-init-mask="true">
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="window.location='{{ url('/') }}'">Закрыть</button>
+                                <button type="submit" name="submit" class="btn js-form-btn btn-primary auto">Отправить</button>
+                            </div>
+
                         </div>
                         <input type="hidden" name="csrf_token" value="XfJveHBZrE">
                     </form>
