@@ -13,6 +13,7 @@ use Illuminate\Foundation\Application;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Exception;
 
 class MessageController extends Controller
@@ -54,11 +55,18 @@ class MessageController extends Controller
         return response()->json(['message' => 'Invalid action'], 400);
     }
 
-    public function visitors(Request $request): View|Factory|Application
+    public function visitors(): View|Factory|Application
     {
-        $visitorCount = DB::table('visitor_counts')->get();
+        $visitorCount = DB::table('visitor_counts')->orderByDesc('id')->limit(50)->get();
         // $text = '';
         return view('visitors', ['visitors' => $visitorCount]);
+    }
+
+    public function chatQuestions(): View|Factory|Application
+    {
+        $chatQuestions = DB::table('chat_question')->get();
+
+        return view('questions', ['questions' => $chatQuestions]);
     }
 
     public function weather(Request $crequest): View|Factory|Application
@@ -103,8 +111,6 @@ class MessageController extends Controller
             'text' => 'Пришло новое сообщение от пользователя: ' . $message->name . ' телефон: ' . $message->phone
         ]);
 
-        $text = 'Сообщение отправлено!';
-        $ipAddress = $request->ip();
         $visitorCountLast = DB::table('visitor_counts')->latest('id')->first();
         $countId = $visitorCountLast->id - 1;
         $visitorCount = DB::table('visitor_counts')->find($countId);
@@ -121,10 +127,10 @@ class MessageController extends Controller
 
         curl_close($crequest);
         $data = json_decode($response);
-        $currentTime = time();
 
-        return redirect()->route('welcome', compact('text'))
+        return redirect()->route('welcome')
             ->with([
+                'text' => 'Сообщение отправлено!',
                 'visitorCount' => $visitorCount,
                 'data' => $data
             ]);
@@ -134,13 +140,13 @@ class MessageController extends Controller
      * @throws Exception
      */
     public function chatStore(Request $request)
-    {    
+    {
         // Валидируем запрос
         $validated = $request->validate([
             'question' => 'required|string|max:500',
         ]);
 
-        $token = env('SECRET_TOKEN');       
+        $token = env('SECRET_TOKEN');
 
         if ($request->token === $token) {
             $response = Http::withHeaders([
@@ -162,25 +168,13 @@ class MessageController extends Controller
             $answer = 'Ошибка при запросе к OpenAI. Попробуйте позже.';
         }
 
-        // Отправляем запрос в OpenAI через прокси
-        // $response = Http::withHeaders([
-        //     'Authorization' => 'Bearer ' . $OPENAI_API_KEY,
-        // ])
-        // ->post('https://api.proxyapi.ru/openai/v1/chat/completions', [
-        //     'model' => 'gpt-3.5-turbo',
-        //     'messages' => [
-        //         ['role' => 'user', 'content' => $validated['question']],
-        //     ]
-        // ]);
-
-        // Проверяем, есть ли ошибка в ответе
-        // if ($response->successful()) {
-        //     $answer = $response->json()['choices'][0]['message']['content'];
-        // } else {
-        //     $answer = 'Ошибка при запросе к OpenAI. Попробуйте позже.';
-        // }
-
-        // Возвращаем ответ на страницу с выводом
+        $ipAddress = $request->header('X-Forwarded-For') ?? $request->ip();
+        DB::table('chat_question')->insert([
+            'created_at' => Carbon::now('Asia/Yekaterinburg'),
+            'ip' => $ipAddress,
+            'question' => $validated['question'],
+            'answer' => $answer,
+        ]);
         return redirect()->back()->with('answer', $answer);
     }
 }

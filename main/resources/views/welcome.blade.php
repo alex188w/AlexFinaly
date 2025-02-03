@@ -46,7 +46,9 @@
 
             </div>
         </div>
-        <p style="color: red">{{$text}}</p>
+        @if (session('text'))
+            <p style="color: red">{{ session('text') }}</p>
+        @endif 
 
         <div class="heading center">
             <img height="35px" width="35px" src="./img/GB.png" alt="">
